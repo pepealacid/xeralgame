@@ -1,0 +1,7 @@
+{
+  "name": "XeralGame",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

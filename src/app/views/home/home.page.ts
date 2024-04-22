@@ -51,13 +51,18 @@ export class HomePage implements OnInit, AfterViewInit {
   public shouldAddScore: boolean = true;
   public lastBodyA: any;
   public lastBodyB: any;
+  public playingMusic: boolean = true;
   public radiusDictionary: any = {
     0: 30,
     1: 40,
     2: 60,
     3: 80,
-    4: 90,
+    4: 100,
+    5: 120,
+    6: 140,
+    7: 180,
   };
+  public backgroundMusic: any;
 
   public wallsAdded: boolean = false;
   private lastOnStart: number = 0;
@@ -149,6 +154,9 @@ export class HomePage implements OnInit, AfterViewInit {
   setContext(): void {
     this.canvas = this.myCanvas.nativeElement;
     this.context = this.canvas.getContext('2d');
+    this.backgroundMusic = new Audio();
+    this.backgroundMusic.src = '../../../assets/audio/background_music.mp3';
+    this.backgroundMusic.load();
     this.engine = Engine.create();
     this.render = Render.create({
       engine: this.engine,
@@ -172,6 +180,8 @@ export class HomePage implements OnInit, AfterViewInit {
 
   start(): void {
     this.reset();
+    this.backgroundMusic.play();
+    this.backgroundMusic.loop = true;
     this.interval = setInterval(() => {
       this.framesCounter++;
       if(this.framesCounter > 3000){
@@ -204,36 +214,55 @@ export class HomePage implements OnInit, AfterViewInit {
       fruit.rotate(body.angle)
       fruit.setPosition(body.position.x - body.circleRadius, body.position.y - body.circleRadius);
       fruit.draw();
+      
       // fruit.movement();
     })
 
 
       // PINTAR BORDES DEL MUNDO
-//  this.context.fillStyle = 'rgba(128, 128, 128, 0.6)'; // Color gris para los muros y el suelo
-//   const bodies = this.world.bodies; // Obtener todos los cuerpos en el mundo
-//   bodies.forEach((body: any) => {
-        
-//        const vertices = body.vertices; // Obtener los vértices del cuerpo
-//        this.context.beginPath();
-//        this.context.moveTo(vertices[0].x, vertices[0].y);
-//        for (let i = 1; i < vertices.length; i++) {
-//            this.context.lineTo(vertices[i].x, vertices[i].y);
+  
+//        this.context.fillStyle = 'rgba(128, 128, 128, 0.6)'; 
+  
+//     const bodies = this.world.bodies; 
+  
+//     bodies.forEach((body: any) => {
+
+  
+//          const vertices = body.vertices; 
+  
+//          this.context.beginPath();
+  
+//          this.context.moveTo(vertices[0].x, vertices[0].y);
+  
+//          for (let i = 1; i < vertices.length; i++) {
+  
+//              this.context.lineTo(vertices[i].x, vertices[i].y);
+  
 //        }
-//        this.context.closePath();
-//        this.context.fill();
+  
+//          this.context.closePath();
+  
+//          this.context.fill();
         
+  
 //  });
 
  
-  }
+   }
 
   detectCollisions(): void {
     Events.on(this.engine, "collisionStart", (event: any) => {
       event.pairs.forEach((collision: any) => {
-        if (collision.bodyA.label === collision.bodyB.label && collision.bodyA.label !== "4") {
+        if (collision.bodyA.label === collision.bodyB.label && collision.bodyA.label !== "7") {
           const bodyAId = collision.bodyA.id;
           const bodyBId = collision.bodyB.id;
           if(this.lastBodyA !== collision.bodyA && this.lastBodyB !== collision.bodyB){
+            if(this.playingMusic){
+              const audio = new Audio();
+              audio.src= '../../../assets/audio/blub.mp3';
+              audio.load();
+              audio.play();
+            }
             this.score += Number(collision.bodyA.label)+1;
             this.bubbleScore.animate();
           }
@@ -252,7 +281,6 @@ export class HomePage implements OnInit, AfterViewInit {
             if(matchingFruitIndexA > matchingFruitIndexB){
               const { body: bodyA, fruit: fruitA } = this.fruits[matchingFruitIndexA];
               const { body: bodyB, fruit: fruitB } = this.fruits[matchingFruitIndexB];
-              console.log(fruitA, fruitB)
           World.remove(this.world, [bodyA, bodyB]);
            this.fruits.splice(matchingFruitIndexA, 1);
            this.fruits.splice(matchingFruitIndexB, 1);
@@ -271,8 +299,6 @@ export class HomePage implements OnInit, AfterViewInit {
                isStatic: false,
              }
            );
-           console.log('FRUIT', newFruit)
-            console.log('BODY', newBody)
            this.fruits.push({ body: newBody, fruit: newFruit });
             World.add(this.world, [newBody]);
 
@@ -365,7 +391,7 @@ for (let i = 1; i < this.currentBody?.vertices?.length; i++) {
 
 // Calculamos el ancho como la diferencia entre el máximo y el mínimo
 const width = maxX - minX;
-    if(this.bodyMovement.includes("ArrowRight") && this.currentBody.position.x < window.innerWidth - width - this.currentBody.circleRadius) {
+    if(this.bodyMovement.includes("ArrowRight") && this.currentBody.position.x - this.currentBody.circleRadius*2 < window.innerWidth - width - this.currentBody.circleRadius) {
       Body.setPosition(this.currentBody, {x: this.currentBody.position.x + 3, y: this.currentBody.position.y});
     } else if (this.bodyMovement.includes("ArrowLeft") && this.currentBody.position.x > this.currentBody.circleRadius + 70) {
       Body.setPosition(this.currentBody, {x: this.currentBody.position.x - 3, y: this.currentBody.position.y});
@@ -379,27 +405,37 @@ const width = maxX - minX;
 
   addFruit(): void {
     const index = Math.floor(Math.random() * 2);
+    //const index = 6;
     let radius;
-    switch (index) {
-      case 0:
-        radius = 30;
-        break;
-      case 1:
-        radius = 40;
-        break;
-      case 2:
-        radius = 60;
-        break;
-      case 3:
-        radius = 80;
-        break;
-      case 4:
-        radius = 90;
-        break;
-      default:
-        radius = 20;
-        break;
-    }
+  switch (index) {
+    case 0:
+      radius = 30;
+      break;
+    case 1:
+      radius = 40;
+      break;
+    case 2:
+      radius = 60;
+      break;
+    // case 3:
+    //   radius = 80;
+    //   break;
+    // case 4:
+    //   radius = 100;
+    //   break;
+    // case 5:
+    //   radius = 120;
+    //   break;
+    // case 6:
+    //   radius = 140;
+    //   break;
+    // case 7:
+    //   radius = 180;
+    //   break;
+    default:
+      radius = 20;
+      break;
+  }
     const body = Bodies.circle(this.player.posX, this.player.posY + 40, radius , {
       label: index.toString(),
       isSleeping: true,
@@ -436,6 +472,12 @@ const width = maxX - minX;
     this.currentBody.isSleeping = false;
     this.disableAction = true;
 
+    if(this.playingMusic){
+      const audio = new Audio();
+      audio.src = '../../../assets/audio/cae.mp3'
+      audio.load();
+      audio.play();
+    }
     setTimeout(() => {
       this.addFruit();
       this.disableAction = false;
@@ -472,35 +514,16 @@ document.addEventListener("keyup", (event) => {
     return Math.floor(Math.random() * 1000000); // Puedes ajustar esto según tus necesidades específicas
   }
 
-async openMenu(): Promise<void> {
-const actionSheet = await this.actionSheetCtrl.create({
-  header: 'Menu',
-  buttons: [
-    {
-      text: 'Xeral',
-      icon: 'refresh',
-      handler: () => {
-        environment.theme = 'xeral';
-        this.restartGame();
-      }
-    },
-    {
-      text: 'Halloween',
-      icon: 'refresh',
-      handler: () => {
-        environment.theme = 'hallo';
-        this.restartGame();
-      }
-    },
-    {
-      text: 'Exit',
-      icon: 'exit',
-      handler: () => {
-        actionSheet.dismiss();
-      }
-    }
-  ]
-});
-await actionSheet.present();
+async handleMusic(): Promise<void> {
+  this.playingMusic = !this.playingMusic;
+  if(this.playingMusic){
+    this.backgroundMusic.play();
+  } else {
+    this.backgroundMusic.pause();
+  }
 }
+
+
+
+
 }

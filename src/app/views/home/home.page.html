@@ -1,6 +1,6 @@
 <div id="game-container">
   <div class="half-screen" id="leftDiv" #leftDiv></div>
   <div class="half-screen" id="rightDiv" #rightDiv></div>
-  <ion-button (click)="openMenu()">⚙️</ion-button>
+  <ion-button class="music-button" (click)="handleMusic()">{{playingMusic ? '🔊' : '🔇'}}</ion-button>
   <ion-button class="release-button" (click)="releaseFruit()">Tira!</ion-button>
   <canvas #canvas></canvas></div>

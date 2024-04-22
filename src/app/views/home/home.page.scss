@@ -1,0 +1,42 @@
+ion-button{
+    position: absolute;
+    background-color: transparent !important;
+    --background-color: transparent !important;
+    --background: transparent !important;
+    font-size: 30px;
+    right: 0;
+}
+
+
+
+.half-screen {
+    flex: 1; /* Ocupa la mitad del espacio horizontal */
+  }
+  
+  #leftDiv {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0); /* Div transparente */
+    height: 90vh;
+    width: 50vw;
+  }
+  
+  #rightDiv {
+    position:absolute;
+    background-color: rgba(255, 255, 255, 0); /* Div transparente */
+    height: 90vh;
+    width: 50vw;
+    left: 50vw;
+  }
+
+  .release-button{
+    position: absolute;
+    background-color: transparent !important;
+    --background-color: transparent !important;
+    --background: transparent !important;
+    font-size: 30px;
+    right: 0;
+    top: 90vh;
+    width: 100vw;
+    height: 10vh;
+    text-align: center;
+  }

@@ -5,8 +5,9 @@ import { Container } from 'src/app/classes/container';
 import { BubbleScore } from 'src/app/classes/bubbleScore';
 import { Player } from 'src/app/classes/player';
 import { Fruit } from 'src/app/classes/fruit';
-import { ActionSheetController, GestureController } from '@ionic/angular';
+import { ActionSheetController, GestureController, ModalController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
+import { OpeningModalComponent } from 'src/app/modals/opening-modal/opening-modal.modal';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,8 @@ export class HomePage implements OnInit, AfterViewInit {
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
-    private gestureCtrl: GestureController
+    private gestureCtrl: GestureController,
+    private modalCtrl: ModalController
   ) {
     this.setEvents()
   }
@@ -52,6 +54,7 @@ export class HomePage implements OnInit, AfterViewInit {
   public lastBodyA: any;
   public lastBodyB: any;
   public playingMusic: boolean = true;
+  public delayedFruits: any[] = [];
   public radiusDictionary: any = {
     0: 20,
     1: 30,
@@ -63,6 +66,7 @@ export class HomePage implements OnInit, AfterViewInit {
     7: 150,
   };
   public backgroundMusic: any;
+  public isPlaying: boolean = false;
 
   public wallsAdded: boolean = false;
   private lastOnStart: number = 0;
@@ -70,23 +74,41 @@ export class HomePage implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
+    this.presentModal();
+   
+  }
+
+  startGame(): void {
+    this.isPlaying = false;
     this.setContext();
     this.setDimensions();
     this.start();
     this.drawAll();
     
-    this.addFruit();
-  }
+    this.addFruit();}
 
+  async presentModal(score: number | null = null): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: OpeningModalComponent,
+      cssClass: 'opening-modal',
+      componentProps: {
+        score: score
+      }
+    });
+
+    modal.onDidDismiss().then(()=>{
+      this.startGame();
+    
+    })
+    return await modal.present();
+  }
   
 
   leftClick(){
-    console.log("left")
     this.bodyMovement.push("ArrowLeft");
   }
 
   rightClick(){
-    console.log("right")
     this.bodyMovement.push("ArrowRight");
   }
 
@@ -213,6 +235,8 @@ export class HomePage implements OnInit, AfterViewInit {
     this.bodyMovementFunc();
     this.fruits.forEach((fruitData) => {
       const { body, fruit } = fruitData;
+
+
       fruit.rotate(body.angle)
       fruit.setPosition(body.position.x - body.circleRadius, body.position.y - body.circleRadius);
       fruit.draw();
@@ -223,40 +247,40 @@ export class HomePage implements OnInit, AfterViewInit {
 
       // PINTAR BORDES DEL MUNDO
   
-  //       this.context.fillStyle = 'rgba(128, 128, 128, 0.6)'; 
+  //        this.context.fillStyle = 'rgba(128, 128, 128, 0.6)'; 
   
-  //    const bodies = this.world.bodies; 
+  //     const bodies = this.world.bodies; 
   
-  //    bodies.forEach((body: any) => {
+  //     bodies.forEach((body: any) => {
 
   
-  //         const vertices = body.vertices; 
+  //          const vertices = body.vertices; 
   
-  //         this.context.beginPath();
+  //          this.context.beginPath();
   
-  //         this.context.moveTo(vertices[0].x, vertices[0].y);
+  //          this.context.moveTo(vertices[0].x, vertices[0].y);
   
-  //         for (let i = 1; i < vertices.length; i++) {
+  //          for (let i = 1; i < vertices.length; i++) {
   
-  //             this.context.lineTo(vertices[i].x, vertices[i].y);
+  //              this.context.lineTo(vertices[i].x, vertices[i].y);
   
-  //       }
+  //        }
   
-  //         this.context.closePath();
+  //          this.context.closePath();
   
-  //         this.context.fill();
+  //          this.context.fill();
         
   
-  // });
+  //  });
 
  
    }
 
   detectCollisions(): void {
-    console.log('')
     Events.on(this.engine, "collisionStart", (event: any) => {
       
       event.pairs.forEach((collision: any) => {
+       
         if (collision.bodyA.label === collision.bodyB.label && collision.bodyA.label !== "7") {
           const bodyAId = collision.bodyA.id;
           const bodyBId = collision.bodyB.id;
@@ -368,10 +392,6 @@ export class HomePage implements OnInit, AfterViewInit {
          this.fruits.splice(matchingFruitIndexA, 1);
       }
       }
-
-
-
-
     }
   });
     });
@@ -442,6 +462,7 @@ const width = maxX - minX;
 
     fruit.setPosition(this.player.posX - radius, this.player.posY-radius);
 
+    
 
     this.currentBody = body;
     this.currentFruit = fruit;

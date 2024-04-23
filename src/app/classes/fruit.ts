@@ -107,7 +107,7 @@ export class Fruit {
             }
 
             setPosition(x: number, y: number): void {
-              if(x > 70 && x < window.innerWidth - 70){
+              if(x > 30 && x < window.innerWidth - 70){
               this.posX = x;
             }
                 this.posY = y;

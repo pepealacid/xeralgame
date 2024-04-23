@@ -60,7 +60,7 @@ export class Player {
         movement(keyPressed: string[]) {
             
               keyPressed.forEach((elm) => {
-                if (elm.includes("ArrowRight") && this.posX < window.innerWidth - this.width + 130) {
+                if (elm.includes("ArrowRight") && this.posX < window.innerWidth - this.width + window.innerWidth / 5) {
                   this.posX += this.velMOVE;
                 } else if (
                   elm.includes("ArrowLeft") && this.posX > 100) {

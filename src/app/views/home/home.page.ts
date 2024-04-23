@@ -223,31 +223,31 @@ export class HomePage implements OnInit, AfterViewInit {
 
       // PINTAR BORDES DEL MUNDO
   
-        this.context.fillStyle = 'rgba(128, 128, 128, 0.6)'; 
+  //       this.context.fillStyle = 'rgba(128, 128, 128, 0.6)'; 
   
-     const bodies = this.world.bodies; 
+  //    const bodies = this.world.bodies; 
   
-     bodies.forEach((body: any) => {
+  //    bodies.forEach((body: any) => {
 
   
-          const vertices = body.vertices; 
+  //         const vertices = body.vertices; 
   
-          this.context.beginPath();
+  //         this.context.beginPath();
   
-          this.context.moveTo(vertices[0].x, vertices[0].y);
+  //         this.context.moveTo(vertices[0].x, vertices[0].y);
   
-          for (let i = 1; i < vertices.length; i++) {
+  //         for (let i = 1; i < vertices.length; i++) {
   
-              this.context.lineTo(vertices[i].x, vertices[i].y);
+  //             this.context.lineTo(vertices[i].x, vertices[i].y);
   
-        }
+  //       }
   
-          this.context.closePath();
+  //         this.context.closePath();
   
-          this.context.fill();
+  //         this.context.fill();
         
   
-  });
+  // });
 
  
    }

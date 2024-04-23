@@ -42,16 +42,16 @@ export class Fruit {
                 this.height = 180;
                 break;
             case 5:
-                this.width = 220;
-                this.height = 220;
+                this.width = 200;
+                this.height = 200;
                 break;
             case 6:
-                this.width = 260;
-                this.height = 260;
+                this.width = 240;
+                this.height = 240;
                 break;
             case 7:
-                this.width = 340;
-                this.height = 340;
+                this.width = 300;
+                this.height = 300;
                 break;
             default:
                 break;

@@ -58,9 +58,9 @@ export class HomePage implements OnInit, AfterViewInit {
     2: 50,
     3: 70,
     4: 90,
-    5: 110,
-    6: 130,
-    7: 170,
+    5: 100,
+    6: 120,
+    7: 150,
   };
   public backgroundMusic: any;
 
@@ -72,11 +72,15 @@ export class HomePage implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.setContext();
     this.setDimensions();
+  }
+  
+  startGame(): void {
     this.start();
     this.drawAll();
     
     this.addFruit();
   }
+  
 
   leftClick(){
     console.log("left")
@@ -221,37 +225,39 @@ export class HomePage implements OnInit, AfterViewInit {
 
       // PINTAR BORDES DEL MUNDO
   
-  //       this.context.fillStyle = 'rgba(128, 128, 128, 0.6)'; 
+        this.context.fillStyle = 'rgba(128, 128, 128, 0.6)'; 
   
-  //    const bodies = this.world.bodies; 
+     const bodies = this.world.bodies; 
   
-  //    bodies.forEach((body: any) => {
+     bodies.forEach((body: any) => {
 
   
-  //         const vertices = body.vertices; 
+          const vertices = body.vertices; 
   
-  //         this.context.beginPath();
+          this.context.beginPath();
   
-  //         this.context.moveTo(vertices[0].x, vertices[0].y);
+          this.context.moveTo(vertices[0].x, vertices[0].y);
   
-  //         for (let i = 1; i < vertices.length; i++) {
+          for (let i = 1; i < vertices.length; i++) {
   
-  //             this.context.lineTo(vertices[i].x, vertices[i].y);
+              this.context.lineTo(vertices[i].x, vertices[i].y);
   
-  //       }
+        }
   
-  //         this.context.closePath();
+          this.context.closePath();
   
-  //         this.context.fill();
+          this.context.fill();
         
   
-  // });
+  });
 
  
    }
 
   detectCollisions(): void {
+    console.log('')
     Events.on(this.engine, "collisionStart", (event: any) => {
+      
       event.pairs.forEach((collision: any) => {
         if (collision.bodyA.label === collision.bodyB.label && collision.bodyA.label !== "7") {
           const bodyAId = collision.bodyA.id;
@@ -284,8 +290,10 @@ export class HomePage implements OnInit, AfterViewInit {
           World.remove(this.world, [bodyA, bodyB]);
            this.fruits.splice(matchingFruitIndexA, 1);
            this.fruits.splice(matchingFruitIndexB, 1);
-
-           const newFruit = new Fruit(this.context, bodyA.position.x, bodyA.position.y, Number(bodyA.label) + 1);
+             
+           console.log(bodyA.position.x - bodyA.circleRadius)
+           const newFruit = new Fruit(this.context, bodyA.position.x-bodyA.circleRadius, bodyA.position.y, Number(bodyA.label) + 1);
+           console.log(newFruit.posX)
            const newBody = Bodies.circle(
              newFruit.posX,
              newFruit.posY,
@@ -309,8 +317,10 @@ export class HomePage implements OnInit, AfterViewInit {
            this.fruits.splice(matchingFruitIndexB, 1);
            this.fruits.splice(matchingFruitIndexA, 1);
 
-
-          const newFruit = new Fruit(this.context, bodyA.position.x, bodyA.position.y, Number(bodyA.label) + 1);
+           
+           const newFruit = new Fruit(this.context, bodyA.position.x-bodyA.circleRadius, bodyA.position.y, Number(bodyA.label) + 1);
+           console.log(bodyA.position.x - bodyA.circleRadius)
+          console.log(newFruit.posX)
           const newBody = Bodies.circle(
             newFruit.posX,
             newFruit.posY,
@@ -417,21 +427,6 @@ const width = maxX - minX;
     case 2:
       radius = 50;
       break;
-    // case 3:
-    //   radius = 80;
-    //   break;
-    // case 4:
-    //   radius = 100;
-    //   break;
-    // case 5:
-    //   radius = 120;
-    //   break;
-    // case 6:
-    //   radius = 140;
-    //   break;
-    // case 7:
-    //   radius = 180;
-    //   break;
     default:
       radius = 20;
       break;
@@ -458,6 +453,9 @@ const width = maxX - minX;
     const ground = Bodies.rectangle(0, window.innerHeight - window.innerHeight/6, window.innerWidth + 1000 , 50, {
       isStatic: true,
     });
+    // const topWall = Bodies.rectangle(0, window.innerHeight - window.innerHeight/1.51, window.innerWidth + 1000 , 50, {
+    //   isStatic: true,
+    // });
     const leftWall = Bodies.rectangle(0, window.innerHeight-250, window.innerHeight/8, this.height, { isStatic: true });
     const rightWall = Bodies.rectangle(window.innerWidth - 8, window.innerHeight-250, window.innerHeight/8, this.height, { isStatic: true });
     World.add(this.world, [this.currentBody, ground, leftWall, rightWall]);
@@ -481,6 +479,7 @@ const width = maxX - minX;
     setTimeout(() => {
       this.addFruit();
       this.disableAction = false;
+      this.shouldPlay = true;
    }, 1000);
   }
 }
@@ -522,8 +521,6 @@ async handleMusic(): Promise<void> {
     this.backgroundMusic.pause();
   }
 }
-
-
 
 
 }

@@ -72,14 +72,12 @@ export class HomePage implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.setContext();
     this.setDimensions();
-  }
-  
-  startGame(): void {
     this.start();
     this.drawAll();
     
     this.addFruit();
   }
+
   
 
   leftClick(){

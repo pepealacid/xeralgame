@@ -53,14 +53,14 @@ export class HomePage implements OnInit, AfterViewInit {
   public lastBodyB: any;
   public playingMusic: boolean = true;
   public radiusDictionary: any = {
-    0: 30,
-    1: 40,
-    2: 60,
-    3: 80,
-    4: 100,
-    5: 120,
-    6: 140,
-    7: 180,
+    0: 20,
+    1: 30,
+    2: 50,
+    3: 70,
+    4: 90,
+    5: 110,
+    6: 130,
+    7: 170,
   };
   public backgroundMusic: any;
 
@@ -195,7 +195,7 @@ export class HomePage implements OnInit, AfterViewInit {
   reset(): void {
     this.background = new Background(this.context, this.width, this.height, 0, 0);
     console.log(this.bodyMovement)
-    this.player = new Player(this.context, 250, 150, this.width/2 - 25, 530);
+    this.player = new Player(this.context, window.innerWidth / 3, 150, this.width/2 - 25, window.innerHeight /5);
     this.container = new Container(this.context, this.width, this.height, 0, 0);
     this.bubbleScore = new BubbleScore(this.context);
   }
@@ -221,31 +221,31 @@ export class HomePage implements OnInit, AfterViewInit {
 
       // PINTAR BORDES DEL MUNDO
   
-//        this.context.fillStyle = 'rgba(128, 128, 128, 0.6)'; 
+  //       this.context.fillStyle = 'rgba(128, 128, 128, 0.6)'; 
   
-//     const bodies = this.world.bodies; 
+  //    const bodies = this.world.bodies; 
   
-//     bodies.forEach((body: any) => {
+  //    bodies.forEach((body: any) => {
 
   
-//          const vertices = body.vertices; 
+  //         const vertices = body.vertices; 
   
-//          this.context.beginPath();
+  //         this.context.beginPath();
   
-//          this.context.moveTo(vertices[0].x, vertices[0].y);
+  //         this.context.moveTo(vertices[0].x, vertices[0].y);
   
-//          for (let i = 1; i < vertices.length; i++) {
+  //         for (let i = 1; i < vertices.length; i++) {
   
-//              this.context.lineTo(vertices[i].x, vertices[i].y);
+  //             this.context.lineTo(vertices[i].x, vertices[i].y);
   
-//        }
+  //       }
   
-//          this.context.closePath();
+  //         this.context.closePath();
   
-//          this.context.fill();
+  //         this.context.fill();
         
   
-//  });
+  // });
 
  
    }
@@ -409,13 +409,13 @@ const width = maxX - minX;
     let radius;
   switch (index) {
     case 0:
-      radius = 30;
+      radius = 20;
       break;
     case 1:
-      radius = 40;
+      radius = 30;
       break;
     case 2:
-      radius = 60;
+      radius = 50;
       break;
     // case 3:
     //   radius = 80;
@@ -455,11 +455,11 @@ const width = maxX - minX;
 
     this.fruits.push({body, fruit});
     // Engine.run(this.engine); 
-    const ground = Bodies.rectangle(0, window.innerHeight-350, window.innerWidth + 1000 , 60, {
+    const ground = Bodies.rectangle(0, window.innerHeight - window.innerHeight/6, window.innerWidth + 1000 , 50, {
       isStatic: true,
     });
-    const leftWall = Bodies.rectangle(0, window.innerHeight-250, 180, this.height, { isStatic: true });
-    const rightWall = Bodies.rectangle(window.innerWidth - 8, window.innerHeight-250, 180, this.height, { isStatic: true });
+    const leftWall = Bodies.rectangle(0, window.innerHeight-250, window.innerHeight/8, this.height, { isStatic: true });
+    const rightWall = Bodies.rectangle(window.innerWidth - 8, window.innerHeight-250, window.innerHeight/8, this.height, { isStatic: true });
     World.add(this.world, [this.currentBody, ground, leftWall, rightWall]);
     
   }

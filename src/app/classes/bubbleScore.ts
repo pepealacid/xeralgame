@@ -15,8 +15,8 @@ export class BubbleScore {
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
-    this.width = 220;
-    this.height = 220;
+    this.width = window.innerWidth / 4;
+    this.height = window.innerWidth / 4;
     this.posX = 40;
     this.posY = 30;
     this.initialY = this.posY;
@@ -71,7 +71,7 @@ export class BubbleScore {
         requestAnimationFrame(animateText);
       } else {
         this.textColor = "black";
-        this.textSize = "bold 60px Arial";
+        this.textSize = "bold 20px Arial";
       }
     };
 

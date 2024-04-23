@@ -22,36 +22,36 @@ export class Fruit {
 
         switch (this.index) {
             case 0:
+                this.width = 40;
+                this.height = 40;
+                break;
+            case 1:
                 this.width = 60;
                 this.height = 60;
                 break;
-            case 1:
-                this.width = 80;
-                this.height = 80;
-                break;
             case 2:
-                this.width = 120;
-                this.height = 120;
+                this.width = 100;
+                this.height = 100;
                 break;
             case 3:
-                this.width = 160;
-                this.height = 160;
+                this.width = 140;
+                this.height = 140;
                 break;
             case 4:
-                this.width = 200;
-                this.height = 200;
+                this.width = 180;
+                this.height = 180;
                 break;
             case 5:
-                this.width = 240;
-                this.height = 240;
+                this.width = 220;
+                this.height = 220;
                 break;
             case 6:
-                this.width = 280;
-                this.height = 280;
+                this.width = 260;
+                this.height = 260;
                 break;
             case 7:
-                this.width = 360;
-                this.height = 360;
+                this.width = 340;
+                this.height = 340;
                 break;
             default:
                 break;
